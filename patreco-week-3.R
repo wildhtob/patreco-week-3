@@ -83,7 +83,43 @@ caro_filter %>%
 ## TASK 3: VISUALIZE SEGMENTED TRAJECTORIES ####
 
 caro60 %>% 
-  ggplot(aes(E, N, color = static)) +
+  ggplot(aes(E, N)) +
+  geom_path() +
+  geom_point(aes(color = static)) +
+  coord_fixed() +
+  theme(legend.position = "right")
+
+# TASK 4: SEGMENT-BASED ANALYSIS ####
+
+# define function to assign unique IDs ####
+rle_id <- function(vec){
+  x <- rle(vec)$lengths
+  as.factor(rep(seq_along(x), times=x))
+}
+
+# apply function to data, based on static ####
+
+caro60 <- caro60 %>% 
+  mutate(segment_id = rle_id(static))
+
+# plot moving segments coloured by segment ID ####
+caro60 %>%
+  filter(!static) %>% 
+  ggplot(aes(E, N, color = segment_id)) +
+  geom_path() +
+  geom_point() +
+  coord_fixed() +
+  theme(legend.position = "right")
+
+# add count column per segment ####
+caro60 <- caro60 %>% 
+  group_by(segment_id) %>%
+  mutate(n = n()) 
+
+# plot moving segments >5 min ####
+caro60 %>% 
+  filter(!static & n >5) %>% 
+  ggplot(aes(E, N, color = segment_id)) +
   geom_path() +
   geom_point() +
   coord_fixed() +
