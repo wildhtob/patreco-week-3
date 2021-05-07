@@ -80,3 +80,11 @@ caro_filter %>%
   coord_fixed() +
   theme(legend.position = "bottom")
 
+## TASK 3: VISUALIZE SEGMENTED TRAJECTORIES ####
+
+caro60 %>% 
+  ggplot(aes(E, N, color = static)) +
+  geom_path() +
+  geom_point() +
+  coord_fixed() +
+  theme(legend.position = "right")
