@@ -41,4 +41,42 @@ caro60 <- caro60 %>%
   ) %>% 
   ungroup()
 
+# TASK 2: SPECIFY AND APPLY THRESHOLD D ####
+
+# plot unfiltered trajectories ####
+caro60 %>% 
+  ggplot(aes(E, N)) +
+  geom_path() +
+  geom_point() +
+  coord_fixed() +
+  theme(legend.position = "bottom")
+
+# visual exploration
+summary(caro60$stepMean) # mean at ~7, median at ~4
+
+caro60 %>% 
+  ggplot(aes(stepMean)) +
+  geom_histogram(binwidth = 1)
+
+caro60 %>% 
+  ggplot(aes(stepMean)) +
+  geom_boxplot()
+
+
+# remove static points ####
+
+caro60 <- caro60 %>% 
+  ungroup() %>% 
+  mutate(static = stepMean < mean(stepMean, na.rm = TRUE)) # threshold defined as mean
+
+caro_filter <- caro60 %>% 
+  filter(!static)
+
+# plot filtered trajectories ####
+caro_filter %>% 
+  ggplot(aes(E, N)) +
+  geom_path() +
+  geom_point() +
+  coord_fixed() +
+  theme(legend.position = "bottom")
 
