@@ -2,9 +2,7 @@
 library(readr) # to import tabular data (e.g. csv)
 library(dplyr) # to manipulate (tabular) data
 library(ggplot2) # to visualize data
-library(lubridate) # to handle dates and times
 library(purrr) # to apply functions
-library(zoo) # moving window function
 library(tidyr) # tidy data
 library(SimilarityMeasures) # similarity measures
 
