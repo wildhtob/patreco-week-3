@@ -8,7 +8,7 @@ library(SimilarityMeasures) # similarity measures
 
 # DATA IMPORT ####
 
-caro60 <- read_delim("./data/caro60.txt", ",")
+caro60 <- read_delim("data/caro60.txt", ",")
 
 caro60
 
