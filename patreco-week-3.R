@@ -3,12 +3,11 @@
 library(readr) # to import tabular data (e.g. csv)
 library(dplyr) # to manipulate (tabular) data
 library(ggplot2) # to visualize data
-library(sf) # to handle spatial vector data
-library(terra) # to handle raster data
 library(lubridate) # to handle dates and times
 library(purrr) # to apply functions
 library(zoo) # moving window function
 library(tidyr) # tidy data
+library(SimilarityMeasures) # similarity measures
 
 # DATA IMPORT ####
 
@@ -124,3 +123,23 @@ caro60 %>%
   geom_point() +
   coord_fixed() +
   theme(legend.position = "right")
+
+# TASK 5: SIMILARITY MEASURES ####
+
+ped <- read_delim("data/pedestrian.txt", ",")
+
+ped$TrajID <- ped$TrajID %>% as.factor # define TrajID as a factor
+
+ped
+
+# data exploration ####
+ped %>% 
+  ggplot(aes(E, N)) +
+  geom_point(dplyr::select(ped, -TrajID), alpha = 0.05) + # plot all trajectories in the background
+  geom_path(aes(E, N), alpha = 0.2) +
+  geom_point(aes(color = TrajID)) +
+  facet_wrap(~ TrajID, nrow = 2, labeller = label_both) +
+  coord_fixed() +
+  theme_minimal() +
+  theme(legend.position = "none")
+
