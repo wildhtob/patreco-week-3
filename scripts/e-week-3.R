@@ -126,13 +126,14 @@ caro60 %>%
 
 # TASK 5: SIMILARITY MEASURES ####
 
+# import new data ####
 ped <- read_delim("data/pedestrian.txt", ",")
 
 ped$TrajID <- ped$TrajID %>% as.factor # define TrajID as a factor
 
 ped
 
-# data exploration ####
+# explore new data ####
 ped %>% 
   ggplot(aes(E, N)) +
   geom_point(dplyr::select(ped, -TrajID), alpha = 0.05) + # plot all trajectories in the background
@@ -142,4 +143,6 @@ ped %>%
   coord_fixed() +
   theme_minimal() +
   theme(legend.position = "none")
+
+# Task 6: CALCULATE SIMILARITY ####
 
