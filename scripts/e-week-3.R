@@ -121,6 +121,25 @@ caro60 %>%
   coord_fixed() +
   theme(legend.position = "right")
 
+## Bako ## compute the duration for every segment
+
+## Below I am using the time information in our dataset
+## and then I am calculating in mins the duration of every segment
+caro60_moves <- caro60 %>%                                                               
+  filter(!static)
+
+p1 <- caro60_moves %>%                                                                   
+  group_by(segment_id) %>%                                                              
+  mutate(duration = as.integer(difftime(max(DatetimeUTC),min(DatetimeUTC),"mins"))) %>%
+  filter(duration > 5) %>%                                                               
+  ggplot(aes(E, N, color = segment_id)) +                                                
+  geom_point() +                                                                         
+  geom_path() +                                                                         
+  coord_equal() +                                                                        
+  theme(legend.position = "none") +                                                    
+  labs(subtitle = "Long segments (removed segements <5 minutes)")
+p1
+
 # TASK 5: SIMILARITY MEASURES ####
 
 # import new data ####
@@ -143,9 +162,10 @@ ped %>%
 
 # Task 6: CALCULATE SIMILARITY ####
 
+
 # reformat data into matrices ####
 ped_list <- ped %>%
-  select(-DatetimeUTC) %>% # drop the datetime
+  dplyr::select(-DatetimeUTC) %>% # drop the datetime
   group_split(TrajID, .keep = FALSE) %>% # split by TrajID
   map(~ as.matrix(.)) # save as matrix
 
@@ -217,3 +237,7 @@ ggplot(ped_longer, aes(TrajID, value, fill = TrajID)) +
   facet_wrap(~method, scales = "free_y") +
   labs(y = "value", x = "comparison trajectory") +
   theme(legend.position = "none")
+
+## Very nice effort. Please check also the solutions
+## from Task 6, where you can perform the task more efficiently
+## https://computationalmovementanalysis.github.io/W03_05_solutions.html
